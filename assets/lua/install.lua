@@ -30,7 +30,7 @@ while(true) do
     if not ws then
         print("websocket failed :(")
     else
-        ws.send(textutils.serializeJSON( {cmd = "print", data = "aaaa"} ))
+        ws.send(textutils.serializeJSON( {cmd = "boot", data = os.getComputerLabel()} ));
         print("Done!, routing output to websocket, Auwf wiedur snietsel!")
 
         while(true) do
@@ -61,18 +61,17 @@ while(true) do
                 if not f then
                     print(err)
                 else
-                    local fname = "startup.lua";
+                    local fname = "startup";
                     if (fs.exists(fname)) then
                         fs.delete(fname);
                     end
 
                     local file = fs.open(fname, "w");
-                    file.write(code);
+                    file.write(msg.data);
                     file.close()
                 end
             end
         end
+        ws.close()
     end
-
-    ws.close()
 end

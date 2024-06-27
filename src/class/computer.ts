@@ -5,6 +5,7 @@ import { readFileSync } from "fs";
 
 export class Computer {
     private ws: WebSocket;
+    public name: string= '';
     private callbacks: {[id: string]: any} = [];
 
     constructor(ws: WebSocket) {
@@ -18,6 +19,10 @@ export class Computer {
         this.callbacks['install'] = (name: string) => {
             const code = readFileSync(`${VSService.instance.context.extensionPath}/assets/lua/install.lua`).toString();
             this.ws.send(code);
+        };
+
+        this.callbacks['boot'] = (name: string) => {
+            this.name = name;
         };
     }
 

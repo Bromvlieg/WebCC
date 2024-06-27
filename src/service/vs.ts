@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { WSService } from './websock';
 import { readFileSync } from 'fs';
+import { Logger } from './log';
 
 export const VSOutput = vscode.window.createOutputChannel("WebCC");
 
@@ -21,6 +22,8 @@ export class VSService {
         context.subscriptions.push(vscode.commands.registerCommand('webcc.installFile', () => { this.installFile(); }));
         context.subscriptions.push(vscode.commands.registerCommand('webcc.runProgram', () => {  }));
         context.subscriptions.push(vscode.commands.registerCommand('webcc.copyInstall', () => { this.copyInstallUrl() }));
+
+		Logger.log(`VSService activate`);
     }
 
     private runFile() {
@@ -34,6 +37,7 @@ export class VSService {
         const text = vscode.window.activeTextEditor?.document.getText();
         for (const c of WSService.instance.computers) {
             c.send("install", text);
+            Logger.log(`Send install command to ${c.name}`);
         }
     }
 

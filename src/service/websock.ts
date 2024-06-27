@@ -25,7 +25,7 @@ export class WSService {
 		});
 
 		this.ws.on("connection", (ws: WebSocket) => {
-			Logger.log(`Computer '${ws.url}' connected!`);
+			Logger.log(`A new computer connected!`);
 
             const computer = new Computer(ws);
             this.computers.push(computer);
@@ -36,13 +36,16 @@ export class WSService {
 			});
 
 			ws.on("close", () => {
-                Logger.log(`Computer '${ws.url}' disconnected!`);
+                Logger.log(`Computer '${computer.name}' disconnected!`);
                 this.computers = this.computers.filter((x) => x != computer);
 			});
 		});
+
+		Logger.log(`WSService init`);
 	}
 
     public shutdown() {
+		Logger.log(`WSService shutdown`);
         this.ws.close();
     }
 }
